@@ -24,7 +24,12 @@ async function run() {
             const reviews = await cursor.toArray();
             res.send(reviews);
         });
-
+        app.post('/review', async(req, res) =>{
+            const newReview = req.body;
+            const result = await reviewCollection.insertOne(newReview);
+            res.send(result);
+        });
+        
     }
     finally {
 
