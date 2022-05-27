@@ -29,7 +29,17 @@ async function run() {
             const result = await reviewCollection.insertOne(newReview);
             res.send(result);
         });
-        
+
+
+
+        // =============== Products =================
+        const productCollection = client.db('manufactureDb').collection('product');
+        app.get('/product', async(req, res) => {
+            const query = {};
+            const cursor = productCollection.find(query);
+            const products = await cursor.toArray();
+            res.send(products);
+        });
     }
     finally {
 
