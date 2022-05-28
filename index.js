@@ -91,17 +91,17 @@ async function run() {
             const result = await userCollection.insertOne(newUser);
             res.send(result);
         });
-        app.put('/user/:email', async (req, res) => {
-            const id = req.params.id;
-            const user = req.body;
-            const filter={_id: ObjectId(id)};
-            const options = { upsert: true };
-            const updateDoc = {
-              $set: user,
-            };
-            const result = await userCollection.updateOne(filter, updateDoc, options);
-            res.send(result);
-          })
+        // app.put('/user/:id', async (req, res) => {
+        //     const id = req.params.id;
+        //     const user = req.body;
+        //     const filter={_id: ObjectId(id)};
+        //     const options = { upsert: true };
+        //     const updateDoc = {
+        //       $set: user,
+        //     };
+        //     const result = await userCollection.updateOne(filter, updateDoc, options);
+        //     res.send(result);
+        //   })
 
 
     }
