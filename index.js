@@ -29,7 +29,7 @@ function verifyJWT(req, res, next) {
     });
   }
 
-  
+
 async function run() {
     try {
         await client.connect();
@@ -58,6 +58,19 @@ async function run() {
             const products = await cursor.toArray();
             res.send(products);
         });
+
+
+
+        // =============== Users =================
+        const userCollection = client.db('manufactureDb').collection('user');
+        app.get('/user', async(req, res) => {
+            const query = {};
+            const cursor = userCollection.find(query);
+            const users = await cursor.toArray();
+            res.send(users);
+        });
+
+
     }
     finally {
 
