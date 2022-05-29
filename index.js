@@ -125,12 +125,33 @@ async function run() {
             const orders = await cursor.toArray();
             res.send(orders);
         });
-        app.get('/order/:useremail', async(req, res) =>{
-            const useremail = req.params.useremail;
-            const query={useremail: useremail};
-            const order = await orderCollection.findOne(query);
+        app.get('/order/:email', async(req, res) =>{
+            const email = req.params.email;
+            const query={useremail: email};
+            const order = await orderCollection.find(query).toArray();
             res.send(order);
         });
+        // app.get('/order/:orderId', async(req, res) =>{
+        //     const orderId = req.params.orderId;
+        //     const query={_id: ObjectId(orderId)};
+        //     const order = await orderCollection.findOne(query);
+        //     res.send(order);
+        // });
+
+        // app.put('/order/:orderId', async(req, res) =>{
+        //     const orderId = req.params.orderId;
+        //     const newAvailable = req.body;
+        //     const filter = {_id: ObjectId(orderId)};
+        //     const options = { upsert: true };
+        //     const updatedDoc = {
+        //         $set: {
+        //             available: newAvailable.added,
+        //         }
+        //     };
+        //     const result = await productCollection.updateOne(filter, updatedDoc, options);
+        //     res.send(result);
+        // })
+
         app.get('/order/:id', async(req, res) =>{
             const id = req.params.id;
             const query={_id: ObjectId(id)};
