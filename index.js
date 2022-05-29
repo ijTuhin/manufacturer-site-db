@@ -76,7 +76,7 @@ async function run() {
             const options = { upsert: true };
             const updatedDoc = {
                 $set: {
-                    available: newAvailable.available,
+                    available: newAvailable.added,
                 }
             };
             const result = await productCollection.updateOne(filter, updatedDoc, options);
@@ -125,8 +125,8 @@ async function run() {
             res.send(orders);
         });
         app.get('/order/:email', async(req, res) =>{
-            const email = req.params.email;
-            const query={email: email};
+            const email = req.params.useremail;
+            const query={useremail: email};
             const order = await orderCollection.findOne(query);
             res.send(order);
         });
