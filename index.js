@@ -104,17 +104,18 @@ async function run() {
             const result = await userCollection.insertOne(newUser);
             res.send(result);
         });
-        // app.put('/user/:id', async (req, res) => {
-        //     const id = req.params.id;
-        //     const user = req.body;
-        //     const filter={_id: ObjectId(id)};
-        //     const options = { upsert: true };
-        //     const updateDoc = {
-        //       $set: user,
-        //     };
-        //     const result = await userCollection.updateOne(filter, updateDoc, options);
-        //     res.send(result);
-        //   })
+        app.put('/user/:email', async (req, res) => {
+            const email = req.params.email;
+            const user = req.body;
+            const filter = { email: email };
+            const options = { upsert: true };
+            const updateDoc = {
+              $set: user,
+            };
+            const result = await userCollection.updateOne(filter, updateDoc, options);
+            const token = jwt.sign({ email: email }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' })
+            res.send({ result, token });
+          })
 
         // =============== Orders =================
         const orderCollection = client.db('manufactureDb').collection('order');
@@ -124,9 +125,9 @@ async function run() {
             const orders = await cursor.toArray();
             res.send(orders);
         });
-        app.get('/order/:email', async(req, res) =>{
-            const email = req.params.useremail;
-            const query={useremail: email};
+        app.get('/order/:useremail', async(req, res) =>{
+            const useremail = req.params.useremail;
+            const query={useremail: useremail};
             const order = await orderCollection.findOne(query);
             res.send(order);
         });
