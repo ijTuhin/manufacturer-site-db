@@ -69,6 +69,19 @@ async function run() {
             const result = await productCollection.insertOne(newProduct);
             res.send(result);
         });
+        app.put('/product/:id', async(req, res) =>{
+            const id = req.params.id;
+            const newAvailable = req.body;
+            const filter = {_id: ObjectId(id)};
+            const options = { upsert: true };
+            const updatedDoc = {
+                $set: {
+                    available: newAvailable.available,
+                }
+            };
+            const result = await productCollection.updateOne(filter, updatedDoc, options);
+            res.send(result);
+        })
 
 
 
@@ -102,6 +115,32 @@ async function run() {
         //     const result = await userCollection.updateOne(filter, updateDoc, options);
         //     res.send(result);
         //   })
+
+        // =============== Orders =================
+        const orderCollection = client.db('manufactureDb').collection('order');
+        app.get('/order', async(req, res) => {
+            const query = {};
+            const cursor = orderCollection.find(query);
+            const orders = await cursor.toArray();
+            res.send(orders);
+        });
+        app.get('/order/:email', async(req, res) =>{
+            const email = req.params.email;
+            const query={email: email};
+            const order = await orderCollection.findOne(query);
+            res.send(order);
+        });
+        app.get('/order/:id', async(req, res) =>{
+            const id = req.params.id;
+            const query={_id: ObjectId(id)};
+            const order = await orderCollection.findOne(query);
+            res.send(order);
+        });
+        app.post('/order', async(req, res) =>{
+            const newOrder = req.body;
+            const result = await orderCollection.insertOne(newOrder);
+            res.send(result);
+        });
 
     }
     finally {
