@@ -116,7 +116,7 @@ async function run() {
             const token = jwt.sign({ email: email }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' })
             res.send({ result, token });
           })
-
+          
         // =============== Orders =================
         const orderCollection = client.db('manufactureDb').collection('order');
         app.get('/order', async(req, res) => {
