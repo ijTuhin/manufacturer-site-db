@@ -131,16 +131,46 @@ async function run() {
             const order = await orderCollection.find(query).toArray();
             res.send(order);
         });
-
+        app.get('/order/:email/:id', async(req, res) =>{
+            const email = req.params.email;
+            const id = req.params.id;
+            const query={useremail: email, _id: ObjectId(id)};
+            const order = await orderCollection.find(query).toArray();
+            res.send(order);
+        });
         app.get('/order/:id', async(req, res) =>{
             const id = req.params.id;
             const query={_id: ObjectId(id)};
-            const order = await orderCollection.findOne(query);
+            const order = await orderCollection.find(query).toArray();
             res.send(order);
         });
+
+        app.put('/order/:email/:id', async(req, res) =>{
+            const email = req.params.email;
+            const id = req.params.id;
+            const updated = req.body;
+            const filter = {useremail: email, _id: ObjectId(id)};
+            const options = { upsert: true };
+            const updatedDoc = {
+                $set: {
+                    order: updated,
+                }
+            };
+            const result = await productCollection.updateOne(filter, updatedDoc, options);
+            res.send(result);
+        })
+
         app.post('/order', async(req, res) =>{
             const newOrder = req.body;
             const result = await orderCollection.insertOne(newOrder);
+            res.send(result);
+        });
+
+        app.delete('/order/:email/:id', async(req, res) =>{
+            const email = req.params.email;
+            const id = req.params.id;
+            const query={useremail: email, _id: ObjectId(id)};
+            const result = await orderCollection.deleteOne(query);
             res.send(result);
         });
     }
