@@ -81,7 +81,13 @@ async function run() {
             };
             const result = await productCollection.updateOne(filter, updatedDoc, options);
             res.send(result);
-        })
+        });
+        app.delete('/product/:id', async(req, res) =>{
+            const id = req.params.id;
+            const query={_id: ObjectId(id)};
+            const result = await orderCollection.deleteOne(query);
+            res.send(result);
+        });
 
 
 
@@ -116,7 +122,7 @@ async function run() {
             const token = jwt.sign({ email: email }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' })
             res.send({ result, token });
           })
-          
+
         // =============== Orders =================
         const orderCollection = client.db('manufactureDb').collection('order');
         app.get('/order', async(req, res) => {
